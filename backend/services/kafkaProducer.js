@@ -5,7 +5,15 @@ class KafkaProducerService {
   constructor() {
     const kafkaConfig = {
       clientId: 'inventory-producer',
-      brokers: [process.env.KAFKA_BROKER || 'localhost:9092']
+      brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
+      connectionTimeout: 30000,  // increased to 30s for AWS
+      requestTimeout: 60000,  // increased to 60s for AWS
+      retry: {
+        retries: 10,
+        initialRetryTime: 1000,
+        maxRetryTime: 60000
+      },
+      logLevel: 1  // ERROR level only
     };
 
     // Add SASL authentication if credentials are provided (for Confluent Cloud)
@@ -19,7 +27,10 @@ class KafkaProducerService {
     }
 
     this.kafka = new Kafka(kafkaConfig);
-    this.producer = this.kafka.producer();
+    this.producer = this.kafka.producer({
+      allowAutoTopicCreation: true,
+      maxInFlightRequests: 1
+    });
     this.isConnected = false;
   }
 

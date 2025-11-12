@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const { initializeDatabase } = require('./database/db');
 const KafkaConsumerService = require('./services/kafkaConsumer');
 const authRoutes = require('./routes/auth');
@@ -9,6 +10,12 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
+app.use(cors({
+  origin: '*', // Allow all origins
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Routes

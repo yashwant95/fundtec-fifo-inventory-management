@@ -7,7 +7,15 @@ class KafkaConsumerService {
   constructor() {
     const kafkaConfig = {
       clientId: 'inventory-consumer',
-      brokers: [process.env.KAFKA_BROKER || 'localhost:9092']
+      brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
+      connectionTimeout: 30000,  // increased to 30s for AWS
+      requestTimeout: 60000,  // increased to 60s for AWS
+      retry: {
+        retries: 10,
+        initialRetryTime: 1000,
+        maxRetryTime: 60000
+      },
+      logLevel: 1  // ERROR level only
     };
 
     // Add SASL authentication if credentials are provided (for Confluent Cloud)
@@ -21,7 +29,17 @@ class KafkaConsumerService {
     }
 
     this.kafka = new Kafka(kafkaConfig);
-    this.consumer = this.kafka.consumer({ groupId: 'inventory-management-group' });
+    this.consumer = this.kafka.consumer({ 
+      groupId: `inventory-management-group-${Date.now()}`, // Unique group ID to avoid conflicts
+      sessionTimeout: 300000,  // 5 minutes for AWS EC2
+      heartbeatInterval: 10000,  // 10 seconds
+      rebalanceTimeout: 120000,  // 2 minutes
+      maxWaitTimeInMs: 10000,
+      allowAutoTopicCreation: true,
+      retry: {
+        retries: 10
+      }
+    });
     this.isRunning = false;
   }
 
