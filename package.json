@@ -1,0 +1,25 @@
+{
+  "name": "inventory-management-system",
+  "version": "1.0.0",
+  "description": "FIFO Inventory Management System - Full Stack Application",
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install && cd ../kafka-producer && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "producer": "cd kafka-producer && npm start"
+  },
+  "keywords": [
+    "inventory",
+    "fifo",
+    "kafka",
+    "react",
+    "nodejs",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "ISC"
+}
+
+

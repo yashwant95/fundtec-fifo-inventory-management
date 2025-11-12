@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #f0f0ff;
+  --color-primary-100: #e5e7ff;
+  --color-primary-500: #667eea;
+  --color-primary-600: #764ba2;
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expand-batch {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .animate-slide-down {
+    animation: slide-down 0.3s ease-out;
+  }
+  
+  .animate-expand-batch {
+    animation: expand-batch 0.3s ease-out;
+  }
+}
+
+body {
+  @apply bg-gray-100 font-sans antialiased;
+}
+
+/* Remove default details marker */
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::marker {
+  display: none;
+}
+
+
